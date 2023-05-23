@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Debouncing Example</title>
+  <style>
+    input {
+      width: 300px;
+      height: 30px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Debouncing Example</h1>
+  <input type="text" id="searchInput" placeholder="Search...">
+  <div id="searchResults"></div>
+
+  <script>
+    // Debounce function
+    function debounce(func, delay) {
+      let timeoutId;
+      
+      return function() {
+        const context = this;
+        const args = arguments;
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function() {
+          func.apply(context, args);
+        }, delay);
+      };
+    }
+
+    // Function to fetch search results
+    function fetchSearchResults() {
+      const input = document.getElementById('searchInput');
+      const searchQuery = input.value;
+
+      // Simulating API call and updating search results
+      const searchResults = document.getElementById('searchResults');
+      searchResults.innerHTML = `Fetching results for: ${searchQuery}`;
+    }
+
+    // Debounced version of fetchSearchResults
+    const debouncedFetch = debounce(fetchSearchResults, 500);
+
+    // Event listener for input changes
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', debouncedFetch);
+  </script>
+</body>
+</html>
